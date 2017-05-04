@@ -1,5 +1,9 @@
 package com.sibclan.fluxpoint.dreamteamapp;
 
+import java.text.DecimalFormat;
+
+import static android.R.attr.angle;
+
 /**
  * Created by FluxPoint on 5/3/2017.
  */
@@ -13,12 +17,14 @@ public class ActivityItem {
 
     @Override
     public String toString() {
+        DecimalFormat df = new DecimalFormat("#.00");
+        String durationFormatted = df.format(duration);
         if(time_minutes >= 10) {
-            return duration + "h @ " + watts + " W\n" +
+            return durationFormatted + "h @ " + watts + " W\n" +
                     " Start Time: " + time_hour + ":" + time_minutes;
         }
         else {
-            return duration + "h @ " + watts + " W\n" +
+            return durationFormatted + "h @ " + watts + " W\n" +
                     " Started @ " + time_hour + ":0" + time_minutes;
 
         }
