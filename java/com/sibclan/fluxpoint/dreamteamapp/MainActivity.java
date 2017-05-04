@@ -70,13 +70,25 @@ public class MainActivity extends AppCompatActivity {
     static final int reserve_max = 20000; //50kwh
     static final int progress_max= 50000;
 
+    LocationManager lm;
+
+
+
+    //given an incoming irradiance, how much of that energy is actually converted into wattage. This final result is just Watts
+    //it will need to be multiplied by the number of hours to get Watt hours
+    //incoming values are irradiance in W / m^2. By multiplying by the "size" in m^2, and the efficiency (percent converted into
+    //usable energy, and number of panels (which gives us the TOTAL size of our solar array), we get the amount of usable
+    //energy in terms of W.
     double getEnergy(double irradiance) {
         return irradiance * efficiency * number_of_panels * panel_size;
     }
 
 
-    LocationManager lm;
 
+
+    //this is related to the back button on most android phones.
+    //when we press back we want to remove the last activity added
+    //this also means removing a textview from the linear layout where they were placed
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -100,15 +112,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //when the location actually changes based on GPS, then we'll update the variables for lat/long
     LocationListener onLocationChange = new LocationListener() {
         @Override
         public void onLocationChanged(Location loc) {
             UpdateLocationVariables(loc);
 
             lm.removeUpdates(this); //got what we came for
+            /* //used to have a button that you could push to frce the lat/long update, I remove it when we get the lat long
+            //I didn't want to remove this code in case this is an idea I wanted to come back to here
             Button b = (Button) findViewById(R.id.location_button);
             b.setVisibility(View.GONE);
             b.setEnabled(false);
+            */
             Log.v("DEBUG", "New lat,long is " + longitude + ", " + latitude);
         }
 
@@ -130,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    //we have to ask for permission to use the GPS and the Internet
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -153,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //we got the long and lat, let's find the proper url and fetch in all the data
     public void UpdateLocationVariables(Location loc) {
         if (loc == null) {
             return;
@@ -168,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //get the URL with the predictions for the following day, set some internal variables for the calculations in the futre
     public void fetchURL() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
         if (permissionCheck != PERMISSION_DENIED) {
@@ -199,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+   //occasionally update the GPS when the conditions say that we should do so (moving 10m or waiting a long long time)
     public void UpdateLocation(View v) {
         Log.v("DEBUG", "Entered UpdateLocation");
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -216,6 +235,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //this is the menu/settings icon in the title bar
+    //we can have multiple menu items in there if we want - perhaps adding the location as a second button
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -223,6 +244,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    //when something in the settings/title bar is selected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -260,27 +282,13 @@ public class MainActivity extends AppCompatActivity {
             ll.addView(pbs.get(i));
         }
         ll.addView(new TextView(this));
-        /*
-        LinearLayout al = (LinearLayout) findViewById(R.id.activities);
-        TextView tv = new TextView(this);
-        tv.setText(new String("Sample Activity"));
-        al.addView(tv);
-//        al.notify();
-        */
-
         Log.v("DEBUG", "Created Main Activity");
     }
 
     public void POWERDEATH() {
         Toast.makeText(getApplicationContext(), "WE WILL USE ALL RESERVES!!!",
                 Toast.LENGTH_LONG).show();
-        /*
-        ProgressBar reserve = (ProgressBar) findViewById(R.id.reserve_power_progressbar);
-        reserve.setSecondaryProgress(100);
-        reserve.setProgress(25);
-        reserve.setProgressDrawable(getDrawable(R.drawable.darkness));
-        */
-        //getDrawable(R.drawable.darkness));
+        //TODO: maybe? update reserves to darkness.xml and allow the negatives to show how in debt reserves are
     }
 
     public void updateEnergies() {
@@ -374,15 +382,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //now go through progress bars and update them - update predicted power left for today and predicted reserve remaining
-
         for(int i = 0; i < 48; ++i) {
             double this_half_hour = remaining_half_hour_energies.get(i);
             double full_power = getEnergy(half_hour_energies.get(i)) * 0.5;
-        //    Log.v("DEBUG","index: " + i + "  power="+this_half_hour);
             pbs.get(i).setSecondaryProgress((int) (full_power*100/maxE));
             pbs.get(i).setProgress((int) (this_half_hour*100 / maxE));
-
-//            remaining_half_hour_energies.set(i, half_hour_energies.get(i));
         }
 
         if(reserve_remaining > 0) {
@@ -391,12 +395,11 @@ public class MainActivity extends AppCompatActivity {
         else {
             reserve.setProgress((-reserve_remaining*100)/ reserve_max); //this is how much you went over
         }
-        String display_predicted_power_text = "Predicted Power Left ["  + (int)((totalkWh - usedTotalkWh)/1000) + "/" + (int)(totalkWh/1000)  + " kWh] (full bar=50kWh)";
+        String display_predicted_power_text = "Predicted Overall Daily Left ["  + (int)((totalkWh - usedTotalkWh)/1000) + "/" + (int)(totalkWh/1000)  + " kWh] (full bar=50kWh)";
         ((TextView)findViewById(R.id.predicted_power_textview)).setText(display_predicted_power_text);
 
         TextView rtv = (TextView) findViewById(R.id.reserve_textview);
         rtv.setText("Predicted Reserve remaining. [" + reserve_remaining/1000 + "/" + reserve_max/1000 + " kWh]");
-//        daily.setProgress( (int)(usedTotalkWh*100) / progress_max);
         daily.setSecondaryProgress( (int)(totalkWh*100) / progress_max );
         daily.setProgress( (int) ( ( totalkWh - usedTotalkWh ) * 100 / progress_max ));
         Log.d("DEBUG", "usedTotalkWh="+usedTotalkWh+ "  and totalkWh="+totalkWh);
@@ -445,19 +448,18 @@ public class MainActivity extends AppCompatActivity {
             Log.d("DEBUG1", "false" + SettingsResponse.getInstance().toString());
         }
         updateEnergies();
-        //for all progress bars, update in case anything has changed:
-
-        //   UpdateLocation(ll);
     }
 
 
+    //the button onclick that adds an activity
     public void AddActivity(View v) {
 //launch the other intent to
         Intent i = new Intent(this, AddActivity.class);
         startActivity(i);
     }
 
-
+//TODO: can I even move this to its own class? this might be the powerdeath issue as I let
+    //it interact with the private variables of the enclosing class I think
     private class HttpTask extends AsyncTask<String, Integer, String> {
 
         int totalSum = 0;
