@@ -44,7 +44,7 @@ import static android.content.pm.PackageManager.PERMISSION_DENIED;
 //the 48 hour hack fest did no wonders for organization in this file
 //TODO: see if we can bring the API required level down to 15 to hit more devices
 //there are only a couple spots where we hit higher than 15
-
+//TODO: is there a bug with POWERDEATH function? get some bug reports and see where this leads
 public class MainActivity extends AppCompatActivity {
 
     public ArrayList<ProgressBar> pbs = new ArrayList<>();
