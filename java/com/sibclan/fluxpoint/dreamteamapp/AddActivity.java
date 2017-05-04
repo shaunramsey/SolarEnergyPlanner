@@ -48,6 +48,9 @@ public class AddActivity extends AppCompatActivity {
         time.setAdapter(sa);
         Spinner ws = (Spinner) findViewById(R.id.activity_watts);
         ArrayAdapter<String> wa = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+
+        //TODO - increase the number of items listed here
+        //TODO - add laptops and irons and all the things!
         for (int i = 1; i < 200; ++i) {
             String message = i + " Watts ";
             if(i == 16) message += " -- (LED (100W) Light)";

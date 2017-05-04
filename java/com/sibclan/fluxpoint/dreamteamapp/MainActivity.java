@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
@@ -24,25 +25,25 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sibclan.fluxpoint.dreamteamapp.R;
+
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
+
+
+//TODO: refactor this thing so it has some logical sense and is so much cleaner
+//the 48 hour hack fest did no wonders for organization in this file
+//TODO: see if we can bring the API required level down to 15 to hit more devices
+//there are only a couple spots where we hit higher than 15
 
 public class MainActivity extends AppCompatActivity {
 
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         if (requestCode == 999) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 UpdateLocation(findViewById(R.id.location_button));
@@ -175,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             //then we can do this stuff!
             try {
                 Log.v("DEBUG", "myurl=" + url);
-                SimpleDateFormat format_to = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat format_to = new SimpleDateFormat("HH:mm"); //intentionally don't want local format here, didn't surpress
                 fetchedTime = format_to.format(new Date());
                 fetched_start_hour = Integer.valueOf(fetchedTime.substring(0, 2));
                 fetched_start_half = Integer.valueOf(fetchedTime.substring(3, 5));
@@ -413,16 +414,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         LinearLayout ll = (LinearLayout) findViewById(R.id.activities);
-        if (ActivityResponse.getInstance().submit != false) {
+        if (ActivityResponse.getInstance().submit) {
             //else, too bad, so sad
             TextView tv = new TextView(this);
-            String name = new String(ActivityResponse.getInstance().activity_name);
+            String name = ActivityResponse.getInstance().activity_name;
             String newname = name.replace("\n", "");
             if (newname == null || newname.length() == 0) {
-                newname = new String("Unnamed Activity");
+                newname = "Unnamed Activity";
             }
             Log.v("DEBUG", newname + " " + name);
-            String desc_string = new String(newname + " - " + ActivityResponse.getInstance().power_string);
+            String desc_string = newname + " - " + ActivityResponse.getInstance().power_string;
             desc_string += "\n" + ActivityResponse.getInstance().activity_item.toString();
             tv.setText(desc_string);
             ll.addView(tv);
@@ -433,7 +434,7 @@ public class MainActivity extends AppCompatActivity {
             // ll.notify();
 
         }
-        if (SettingsResponse.getInstance().submit != false) {
+        if (SettingsResponse.getInstance().submit) {
             //means settings came back with changes
             Log.d("DEBUG1", SettingsResponse.getInstance().toString());
             number_of_panels = SettingsResponse.getInstance().number_of_panels;
@@ -450,7 +451,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    void AddActivity(View v) {
+    public void AddActivity(View v) {
 //launch the other intent to
         Intent i = new Intent(this, AddActivity.class);
         startActivity(i);
@@ -466,7 +467,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... urls) {
             // TODO Auto-generated method stub
             String url0 = urls[0];
-            String response = new String("");
+            String response = "";
             try {
                 URL oracle = new URL(url0);
                 URLConnection yc = oracle.openConnection();
@@ -502,15 +503,15 @@ public class MainActivity extends AppCompatActivity {
             String[] lines = response.split("\n");
             maxE = MAX_ENERGIES; // for a half hour
             Log.d("DEBUG", "half hours are out of: " + maxE);
-            double total_energy = 0;
+            //double total_energy = 0;
             for (int i = 1; i <= 48 && i < lines.length; i++) {
                 String[] sep = lines[i].split(",");
                 Integer v = Integer.valueOf(sep[0]);
-                double energy = getEnergy(v) * 0.5; //only used for 30 minutes
-                double pct = energy / maxE; //percentage of energy out of normalish
+                //double energy = getEnergy(v) * 0.5; //only used for 30 minutes
+                //double pct = energy / maxE; //percentage of energy out of normalish
               //  pbs.get(i - 1).setProgress((int) (pct * 100));
                 half_hour_energies.set(i - 1, v * 1.0); //the full energy value
-                total_energy += energy;
+                //total_energy += energy;
                 updateEnergies();
             }
         }

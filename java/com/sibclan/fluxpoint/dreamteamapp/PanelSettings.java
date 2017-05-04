@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+
+//TODO: consider a button to allow the user to set location manually
+//TODO: consider a button to set the gps location to a predesignated positon (like HI-SEAS)
 public class PanelSettings extends AppCompatActivity {
 
     @Override
