@@ -6,11 +6,10 @@ You can see the consumer side of our application for iOS here: [Consumer Applica
 [2017 NASA Space Apps Challenge](https://2017.spaceappschallenge.org/) "[You Are My Sunshine](https://2017.spaceappschallenge.org/challenges/earth-and-us/you-are-my-sunshine/details)" by [The Dream Team](https://2017.spaceappschallenge.org/challenges/earth-and-us/you-are-my-sunshine/teams/dream-team-1/project) in Chestertown, Maryland, U.S.A.
 
 
-![Main Explorer Screen](https://github.com/shaunramsey/SolarEnergyPlanner/blob/master/device-2017-05-03-225643.png 
-"Explorer View")
+![Main Explorer Screen](https://github.com/shaunramsey/SolarEnergyPlanner/blob/master/device-2017-05-04-231642.png "Explorer View")
 
-![Settings Screen](https://github.com/shaunramsey/SolarEnergyPlanner/blob/master/device-2017-05-03-233328.png
-"Settings View")
+![Panel Settings Screen](https://github.com/shaunramsey/SolarEnergyPlanner/blob/master/device-2017-05-03-233328.png "Panel Settings View")
 
-![Activity Entry Screen](https://github.com/shaunramsey/SolarEnergyPlanner/blob/master/device-2017-05-03-233633.png
-"Activity Entry View")
+![Location Settings Screen](https://github.com/shaunramsey/SolarEnergyPlanner/blob/master/device-2017-05-04-231658.png "Location Settings View")
+
+![Activity Entry Screen](https://github.com/shaunramsey/SolarEnergyPlanner/blob/master/device-2017-05-03-233633.png "Activity Entry View")
