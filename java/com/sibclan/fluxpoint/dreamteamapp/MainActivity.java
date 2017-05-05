@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if(activity_list.size() > 0) {
                 ProgressBar res = (ProgressBar) findViewById(R.id.reserve_power_progressbar);
-                res.setSecondaryProgress(0);
-                res.setProgressDrawable(getDrawable(R.drawable.yellowprogress));
+                res.setSecondaryProgress(100);
+                res.setProgressDrawable(getDrawable(R.drawable.progressbars));
                 activity_list.remove (activity_list.size() -1 );//nuke the last one
                 updateEnergies();
                 //todo - fix the list of activities - will show even tho it is popped
@@ -301,8 +301,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void POWERDEATH() {
-        Toast.makeText(getApplicationContext(), "WE WILL USE ALL RESERVES!!!",
-                Toast.LENGTH_LONG).show();
+        ProgressBar res = (ProgressBar) findViewById(R.id.reserve_power_progressbar);
+        res.setSecondaryProgress(0);
+        res.setProgress(0);
+        Toast.makeText(getApplicationContext(), "WE WILL USE ALL RESERVES!!!", Toast.LENGTH_SHORT).show();
+
         //TODO: maybe? update reserves to darkness.xml and allow the negatives to show how in debt reserves are
     }
 
@@ -386,7 +389,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.v("DEBUG","There's plenty of reserve left: reserve_remaining="+reserve_remaining);
                     } else {
                         reserve_remaining -= power_used;
-                        POWERDEATH();
                     }
                 }
                 index = (index + 1) % 48;
@@ -408,7 +410,9 @@ public class MainActivity extends AppCompatActivity {
             reserve.setProgress((reserve_remaining*100) / reserve_max);
         }
         else {
-            reserve.setProgress((-reserve_remaining*100)/ reserve_max); //this is how much you went over
+            POWERDEATH();
+            reserve.setProgressDrawable(getDrawable(R.drawable.yellowprogress));
+            reserve.setProgress((reserve_remaining*100)/ reserve_max); //this is how much you went over
         }
         String display_predicted_power_text = "Predicted Overall Daily Left ["  + (int)((totalkWh - usedTotalkWh)/1000) + "/" + (int)(totalkWh/1000)  + " kWh] (full bar=50kWh)";
         ((TextView)findViewById(R.id.predicted_power_textview)).setText(display_predicted_power_text);
