@@ -19,7 +19,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -56,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
     String fetchedTime;
     int fetched_start_hour = 0;
     int fetched_start_half = 0;
+
+    static final double  hi_seas_longitude = -155.487192; //hi-seas getLongitude
+    static final double hi_seas_latitude = 19.602378; //hi-seas getLatitude;
 
     public double longitude = -155.487192; //hi-seas getLongitude
     public double latitude = 19.602378; //hi-seas getLatitude;
@@ -170,13 +172,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
     //we got the long and lat, let's find the proper url and fetch in all the data
     public void UpdateLocationVariables(Location loc) {
         if (loc == null) {
-            return;
+            longitude = hi_seas_longitude;
+            latitude = hi_seas_latitude;
         }
-        longitude = loc.getLongitude();
-        latitude = loc.getLatitude();
+        else {
+            longitude = loc.getLongitude();
+            latitude = loc.getLatitude();
+        }
+        Toast.makeText(getApplicationContext(), " Updated for location: Long:" + longitude + " Lat:" + latitude, Toast.LENGTH_LONG).show();
         url = "https://api.solcast.com.au/radiation/forecasts?longitude=" + longitude +
                 "&latitude=" + latitude + "&capacity=10&api_key=uos_eam6ozSnecTk5pTerz5ow-r916Uc&format=csv";
         fetchURL();
@@ -190,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
     public void fetchURL() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
         if (permissionCheck != PERMISSION_DENIED) {
-            Toast.makeText(getApplicationContext(), "Trying to get predictions and GPS", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "Trying to get predictions and GPS", Toast.LENGTH_LONG).show();
 
             //then we can do this stuff!
             try {
@@ -249,9 +257,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.action_name:
+            case R.id.action_panel:
                 Intent i = new Intent(this, PanelSettings.class);
                 startActivity(i);
+                return true;
+            case R.id.action_location:
+                Intent i2 = new Intent(this, LocationSettings.class);
+                startActivity(i2);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -283,6 +295,9 @@ public class MainActivity extends AppCompatActivity {
         }
         ll.addView(new TextView(this));
         Log.v("DEBUG", "Created Main Activity");
+        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        UpdateLocation(findViewById(R.id.location_button));
+        Log.v("DEBUG", "Called Update Location and completed");
     }
 
     public void POWERDEATH() {
@@ -409,8 +424,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
-        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        UpdateLocation(findViewById(R.id.location_button));
+
         Log.v("DEBUG", "resuming Main Activity + " + ActivityResponse.getInstance().activity_name + " + " +
                 ActivityResponse.getInstance().submit);
         super.onResume();
@@ -426,10 +440,25 @@ public class MainActivity extends AppCompatActivity {
                 newname = "Unnamed Activity";
             }
             Log.v("DEBUG", newname + " " + name);
-            String desc_string = newname + " - " + ActivityResponse.getInstance().power_string;
-            desc_string += "\n" + ActivityResponse.getInstance().activity_item.toString();
+            String desc_string = "   " + newname + " - " + ActivityResponse.getInstance().power_string;
+            desc_string += "\n  " + ActivityResponse.getInstance().activity_item.toString();
             tv.setText(desc_string);
+            if(ActivityResponse.getInstance().activity_item.watts < 1000)  //green zone is below 1000 watts = adjust to taste
+                tv.setBackground(getDrawable(R.drawable.background_activity_textview));
+            else if(ActivityResponse.getInstance().activity_item.watts < 3000) //yellow zone is below 3000 watts - adjust to taste
+                tv.setBackground(getDrawable(R.drawable.background_yellow_textview));
+            else  //danger zone otherwise
+                tv.setBackground(getDrawable(R.drawable.background_red_textview));
             ll.addView(tv);
+
+            //grey line separator
+            /*
+            View v = new View(this);
+            v.setLayoutParams(new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, 3));
+            v.setBackgroundColor( Color.DKGRAY );
+            ll.addView(v);
+            */
+
             activity_textviews.add(tv);
 
             ActivityItem ai = ActivityResponse.getInstance().activity_item;
@@ -437,16 +466,25 @@ public class MainActivity extends AppCompatActivity {
             // ll.notify();
 
         }
-        if (SettingsResponse.getInstance().submit) {
+        if (SettingsResponse.getInstance().submit == 1) { //the settings panel was updated
             //means settings came back with changes
             Log.d("DEBUG1", SettingsResponse.getInstance().toString());
             number_of_panels = SettingsResponse.getInstance().number_of_panels;
             efficiency = SettingsResponse.getInstance().panel_efficiency;
             panel_size = SettingsResponse.getInstance().size_of_panels;
 
+        } else if(SettingsResponse.getInstance().submit == 2) { //a new location was set in location settings
+            Location loc = new Location("dummy");
+            loc.setLatitude(SettingsResponse.getInstance().latitude);
+            loc.setLongitude(SettingsResponse.getInstance().longitude);
+            UpdateLocationVariables(loc); //defaults to hi-seas habitat
+
+        } else if(SettingsResponse.getInstance().submit == 3) { //we want to poll our GPS again to get location
+            UpdateLocation(ll);
         } else {
             Log.d("DEBUG1", "false" + SettingsResponse.getInstance().toString());
         }
+
         updateEnergies();
     }
 

@@ -20,12 +20,12 @@ public class ActivityItem {
         DecimalFormat df = new DecimalFormat("#.00");
         String durationFormatted = df.format(duration);
         if(time_minutes >= 10) {
-            return durationFormatted + "h @ " + watts + " W\n" +
-                    " Start Time: " + time_hour + ":" + time_minutes;
+            return durationFormatted + "hrs @ " + watts + " W\n" +
+                    "  Started @ " + time_hour + ":" + time_minutes;
         }
         else {
-            return durationFormatted + "h @ " + watts + " W\n" +
-                    " Started @ " + time_hour + ":0" + time_minutes;
+            return durationFormatted + "hrs @ " + watts + " W\n" +
+                    "  Started @ " + time_hour + ":0" + time_minutes;
 
         }
     }

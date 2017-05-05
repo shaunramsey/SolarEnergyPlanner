@@ -9,6 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/activity_gradient_overall_backgrounds"
     tools:context="com.sibclan.fluxpoint.dreamteamapp.MainActivity">
 
     <TextView
@@ -82,14 +83,14 @@
                     android:id="@+id/location_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/greygradient"
+                    android:background="@drawable/orangegradient"
                     android:onClick="UpdateLocation"
                     android:text="Update Location" />
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/greygradient"
+                    android:background="@drawable/orangegradient"
                     android:onClick="AddActivity"
                     android:text="Add activity" />
 

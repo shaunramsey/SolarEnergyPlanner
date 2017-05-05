@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/activity_gradient_overall_backgrounds"
     tools:context="com.sibclan.fluxpoint.dreamteamapp.AddActivity">
 
 
@@ -51,14 +52,15 @@
 
 
         <Button
-            android:background="@drawable/greygradient"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/orangegradient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Submit Activity"
             android:onClick="submit"/>
 
         <Button
-            android:background="@drawable/greygradient"
+            android:background="@drawable/orangegradient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cancel Activity"

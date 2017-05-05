@@ -21,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddActivity" />
-        <activity android:name=".PanelSettings"></activity>
+        <activity android:name=".PanelSettings" />
+        <activity android:name=".LocationSettings"></activity>
     </application>
 
 </manifest>

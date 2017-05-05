@@ -6,21 +6,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.Random;
 
-//TODO: consider a button to allow the user to set location manually
-//TODO: consider a button to set the gps location to a predesignated positon (like HI-SEAS)
+
 public class PanelSettings extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_panel_settings);
-
+        SettingsResponse.getInstance().submit = 0;
     }
 
-
     public void submit(View v) {
-        SettingsResponse.getInstance().submit = true;
+        SettingsResponse.getInstance().submit = 1;
         try {
             SettingsResponse.getInstance().number_of_panels = Integer.valueOf(((EditText) findViewById(R.id.settings_number)).getText().toString());
         } catch (Exception e) {
@@ -39,7 +38,7 @@ public class PanelSettings extends AppCompatActivity {
 
 
     public void cancel(View v) {
-        SettingsResponse.getInstance().submit = false;
+        SettingsResponse.getInstance().submit = 0;
         finish();
     }
 }

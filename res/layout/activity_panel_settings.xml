@@ -1,62 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sibclan.fluxpoint.dreamteamapp.PanelSettings">
+    tools:context="com.sibclan.fluxpoint.dreamteamapp.PanelSettings"
+    android:background="@drawable/activity_gradient_overall_backgrounds">
 
 
-    <TableLayout
-        android:layout_width="368dp"
-        android:layout_height="495dp"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp">
-        <TableRow>
-            <TextView
-                android:text="Number of Solar Panels: "
-                android:padding="30dp"/>
-            <EditText
-                android:inputType="number"
-                android:id="@+id/settings_number"
-                android:hint="30"
-                />
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:text="Panel Efficiency (as percentage): "
-                android:padding="30dp"/>
-            <EditText
-                android:inputType="number"
-                android:id="@+id/settings_efficiency"
-                android:hint="8"/>
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:text="Panel Size (as m^2)"
-                android:padding="30dp"/>
-            <EditText
-                android:inputType="number"
-                android:id="@+id/settings_size"
-                android:hint="1.635481"/>
-        </TableRow>
-        <TableRow>
-            <Button
-                android:background="@drawable/greygradient"
-                android:layout_marginBottom="20dp"
-                android:layout_span="2"
-                android:text="Submit changes"
-                android:onClick="submit"
-                />
-        </TableRow>
-        <TableRow>
-            <Button
-                android:background="@drawable/greygradient"
-                android:layout_span="2"
-                android:text="Cancel"
-                android:onClick="cancel"/>
-        </TableRow>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp"
+            android:stretchColumns="*">
 
-    </TableLayout>
+            <TableRow>
 
-</android.support.constraint.ConstraintLayout>
+                <TextView
+                    android:layout_gravity="right"
+                    android:padding="30dp"
+                    android:text="Number of Solar Panels: " />
+
+                <EditText
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/settings_number"
+                    android:hint="30"
+                    android:inputType="number" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_gravity="right"
+                    android:padding="30dp"
+                    android:text="Panel Efficiency (as percentage): " />
+
+                <EditText
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/settings_efficiency"
+                    android:hint="8"
+                    android:inputType="number" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_gravity="right"
+                    android:padding="30dp"
+                    android:text="Panel Size (as m^2)" />
+
+                <EditText
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/settings_size"
+                    android:hint="1.635481"
+                    android:inputType="numberDecimal" />
+            </TableRow>
+
+            <TableRow>
+
+                <Button
+                    android:layout_marginBottom="20dp"
+                    android:layout_span="2"
+                    android:background="@drawable/orangegradient"
+                    android:onClick="submit"
+                    android:text="Submit changes" />
+            </TableRow>
+
+            <TableRow>
+
+                <Button
+                    android:layout_marginBottom="20dp"
+                    android:layout_span="2"
+                    android:background="@drawable/orangegradient"
+                    android:onClick="cancel"
+                    android:text="Cancel" />
+            </TableRow>
+
+
+
+        </TableLayout>
+
+</LinearLayout>

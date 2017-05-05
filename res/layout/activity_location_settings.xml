@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/activity_gradient_overall_backgrounds"
+    tools:context="com.sibclan.fluxpoint.dreamteamapp.LocationSettings">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="*">
+        <TableRow>
+            <TextView
+                android:layout_gravity="right"
+                android:padding="30dp"
+                android:text="Latitude: " />
+
+            <EditText
+                android:layout_gravity="center_vertical"
+                android:id="@+id/settings_latitude"
+                android:hint="19.6"
+                android:inputType="numberDecimal|numberSigned" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_gravity="right"
+                android:padding="30dp"
+                android:text="Longitude: " />
+
+            <EditText
+                android:layout_gravity="center_vertical"
+                android:id="@+id/settings_longitude"
+                android:hint="-155.4"
+                android:inputType="numberDecimal|numberSigned" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:layout_marginBottom="20dp"
+                android:layout_span="2"
+                android:background="@drawable/orangegradient"
+                android:onClick="specific"
+                android:text="Use Location Entered Above" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:layout_marginBottom="20dp"
+                android:layout_span="2"
+                android:background="@drawable/orangegradient"
+                android:onClick="update"
+                android:text="Use Current GPS Location" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:layout_marginBottom="20dp"
+                android:layout_span="2"
+                android:background="@drawable/orangegradient"
+                android:onClick="hiseas"
+                android:text="Use HI-SEAS Location" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:layout_marginBottom="20dp"
+                android:layout_span="2"
+                android:background="@drawable/orangegradient"
+                android:onClick="random"
+                android:text="Use A Random Location" />
+        </TableRow>
+
+        <TableRow>
+        <Button
+            android:layout_marginBottom="20dp"
+            android:layout_span="2"
+            android:background="@drawable/orangegradient"
+            android:onClick="cancel"
+            android:text="Cancel" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
