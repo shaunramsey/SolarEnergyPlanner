@@ -1,3 +1,15 @@
+Copyright 2017 Shaun Ramsey
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+   
 # SolarEnergyPlanner
 SolarEnergyPlanner - part of an Android solution to the NASA Space Apps Challenge in 2017. The challenge was called: You are my sunshine. This is half of our submission and the Android application! This is our Solar Energy Planner in Explorer Mode. Find out how much energy your location might produce with a solar panel array. Then, find out how much energy you can actually use throughout the day by trying out a few appliances for awhile!
 
